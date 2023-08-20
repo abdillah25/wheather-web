@@ -129,7 +129,7 @@ getClientData();
 
 // get current wheather
 function getCurrentWheather(location) {
-  const request = new Request(`http://api.weatherapi.com/v1/current.json?key=241e16270ce941668ad100110231508&q=${location}&aqi=yes`, {
+  const request = new Request(`https://api.weatherapi.com/v1/current.json?key=241e16270ce941668ad100110231508&q=${location}&aqi=yes`, {
     method: "GET",
     contentType: "application/json",
   });
@@ -223,7 +223,7 @@ thirdSearchBtn.onclick = debouncedFunctionThirdSearchHandler;
 
 // forecast
 async function getforecast(location, country) {
-  const request = new Request(`http://api.weatherapi.com/v1/forecast.json?key=241e16270ce941668ad100110231508&q=${location} ${country}&days=7&aqi=yes&alerts=no`, {
+  const request = new Request(`https://api.weatherapi.com/v1/forecast.json?key=241e16270ce941668ad100110231508&q=${location} ${country}&days=7&aqi=yes&alerts=no`, {
     method: "GET",
     contentType: "application/json",
   });
