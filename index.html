@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>weather web</title>
+    <!-- css -->
+    <link rel="stylesheet" href="./public/src/style.css" />
+    <!-- icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <!-- font 1 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- font 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body id="butter">
+    <section class="fixed inset-x-0 top-0 z-10 items-center pr-5 shadow-sm navbar bg-base-100">
+      <!-- title -->
+      <div class="flex-1">
+        <a class="text-3xl capitalize btn btn-ghost font-ubuntu hover:bg-slate-200">ID weather</a>
+      </div>
+
+      <!-- menu 1 -->
+      <ul class="text-lg w-[70%] lg:justify-around font-kanit font-normal hidden lg:flex lg:items-center" id="firstNav">
+        <!-- third search -->
+        <li class="flex items-center w-[35%] h-12 p-2 px-7 border rounded-full justify-between bg-[#f5f5f5] hover:bg-slate-200">
+          <input class="bg-transparent w-[70%] outline-none" placeholder="search" id="thirdSearch" />
+          <span class="p-2 select-none material-symbols-outlined" id="thirdSearchBtn"> search </span>
+        </li>
+        <li class="">
+          <a href="#airCondition" class="font-medium font-kanit ml-6 w-[70%] capitalize">air indicator</a>
+        </li>
+        <li class="">
+          <a href="#weatherForecast" class="font-medium font-kanit ml-6 w-[70%] capitalize">Weather Forecast</a>
+        </li>
+        <li class="">
+          <a href="#otherLocation" class="font-medium font-kanit ml-6 w-[70%] capitalize">other location</a>
+        </li>
+      </ul>
+
+      <!-- menu 2 -->
+      <ul class="absolute top-0 -translate-x-full left-0 z-10 flex flex-col w-56 h-auto p-3 pt-0 mt-16 transition-all duration-500 rounded-br-xl lg:hidden shadow-sm before:absolute before:w-full before:h-full before:backdrop-blur-md before:z-[-1]" id="secondNav">
+        <!-- navbar search -->
+        <li class="flex items-center w-full h-12 p-2 px-7 border mt-2 rounded-full justify-between bg-[#f5f5f5] mb-2 hover:bg-slate-200">
+          <input type="text" class="bg-transparent w-[70%] outline-none" placeholder="search" id="secSearch" />
+          <span class="p-2 select-none material-symbols-outlined" id="secSearchBtn"> search </span>
+        </li>
+        <li class="mt-11 w-full h-12 flex items-center border rounded-md bg-[#f5f5f5] self-start rounded-l-full hover:bg-slate-200">
+          <span class="material-symbols-outlined bg-[#0077C2] p-2 rounded-full text-white"> airwave </span>
+          <a href="#airCondition" class="font-medium font-kanit ml-6 w-[70%] capitalize">air indicator</a>
+        </li>
+        <li class="mt-2 w-full h-12 flex items-center border rounded-md bg-[#f5f5f5] self-start rounded-l-full hover:bg-slate-200">
+          <span class="material-symbols-outlined bg-[#0077C2] p-2 rounded-full text-white"> cloud </span>
+          <a href="#weatherForecast" class="font-medium font-kanit ml-6 w-[70%] capitalize">Weather Forecast</a>
+        </li>
+        <li class="mt-2 w-full h-12 flex items-center border rounded-md bg-[#f5f5f5] self-start rounded-l-full hover:bg-slate-200">
+          <span class="material-symbols-outlined bg-[#0077C2] p-2 rounded-full text-white"> map </span>
+          <a href="#otherLocation" class="font-medium font-kanit ml-6 w-[70%] capitalize">other location</a>
+        </li>
+      </ul>
+      <!-- hamburger menu -->
+      <section class="select-none btn btn-square btn-ghost text-x lg:hidden hover:bg-slate-200" id="toggleBtn">
+        <span class="material-symbols-outlined"> menu </span>
+      </section>
+    </section>
+
+    <!-- main container -->
+    <section id="airCondition" class="container mt-20 relative w-[90%] h-auto md:w-[50%] shadow-md p-4 mx-auto my-3 rounded-xl ease-in overflow-hidden flex flex-col">
+      <!-- search bar -->
+      <section class="flex items-center w-full h-auto p-3 rounded-full bg-[#f5f5f5] lg:hidden">
+        <input type="text" class="p-0.5 w-full mr-1 bg-transparent focus:bg-transparent outline-none caret-[#0077C2]" placeholder="search" id="mainSearch" />
+        <span class="p-0.5 material-symbols-outlined select-none" id="mainSearchBtn"> search </span>
+      </section>
+      <!-- result location -->
+      <header class="flex items-center justify-center px-4 py-5 mx-auto text-lg font-semibold text-center capitalize font-kanit gap-x-3">
+        <span class="material-symbols-outlined bg-[#0077C2] p-1 rounded-lg text-white">map</span>
+        <h1><span id="name"></span>, <span id="region"></span> <span id="country"></span></h1>
+      </header>
+      <!-- thecard container flip card -->
+      <div class="relative left-1/2 -translate-x-1/2 w-[350px] h-[350px] lg:w-[400px] lg:h-[400px] transition-all duration-500 thecard transform-style-3d my-3" id="containerFlipCard">
+        <!-- first card -->
+        <div class="absolute flex flex-col items-center justify-center w-full h-full select-none backface-hidden">
+          <div class="absolute w-56 h-56 rounded-full circular-progress bg-slate-200 before:absolute before:h-[84%] before:w-[84%] before:bg-white before:rounded-full flex justify-center items-center flex-col">
+            <div class="relative flex items-center text-lg text-black font-kanit">
+              <span class="mr-1 material-symbols-outlined bg-[#0077C2] text-white rounded-lg"> air </span>
+              <span class="inline-block capitalize">air quality</span>
+            </div>
+            <div class="flex items-center justify-center w-full h-4 my-4">
+              <div class="relative my-2 text-4xl text-black value-container font-ubuntu"></div>
+              <span class="relative text-sm font-kanit">PM2.5</span>
+            </div>
+
+            <div class="relative text-lg text-red-500 capitalize font-kanit" id="status"></div>
+          </div>
+        </div>
+        <!-- second card -->
+        <div class="absolute flex flex-col items-center justify-center w-full h-full bg-[#f5f4f1] rounded-lg overflow-hidden rotate-y-180 backface-hidden select-none">
+          <section class="flex flex-col items-center justify-around w-full h-full p-2">
+            <!-- degree section -->
+            <sectionc class="flex flex-col items-center justify-around gap-y-2 h-[50%]">
+              <section class="flex">
+                <div class="text-6xl font-light font-ubuntu lg:text-8xl" id="degree"></div>
+                <img src="" alt="" class="w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]" id="icons" />
+              </section>
+
+              <section class="flex items-center justify-around w-full h-auto">
+                <div class="flex items-center">
+                  <span class="mx-2 p-0.5 material-symbols-outlined bg-[#0077C2] text-white rounded-sm text-sm" style="font-size: 20px" id="temprature">airwave</span>
+                  <span class="mx-2 text-sm" id="uvIndex">info</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="mx-2 material-symbols-outlined bg-[#0077C2] text-white rounded-sm p-0.5" style="font-size: 20px"> cloud </span>
+                  <span class="mx-2 text-sm" id="conditionText">info</span>
+                </div>
+              </section>
+            </sectionc>
+            <!-- info section -->
+            <section>
+              <div class="flex items-center justify-between my-1 text-lg capitalize info font-kanit">
+                <div class="flex flex-col items-center">
+                  <span class="mx-2 material-symbols-outlined bg-[#0077C2] p-0.5 text-white rounded-sm" style="font-size: 20px" style="font-size: 20px"> humidity_mid </span>
+                  <span class="text-[12px] font-light">humidity</span>
+                </div>
+                <progress class="w-56 progress progress-info" value="0" max="100" id="humidityInfo"></progress>
+              </div>
+              <div class="flex items-center justify-between my-1 text-lg capitalize info font-kanit">
+                <div class="flex flex-col items-center">
+                  <span class="mx-2 material-symbols-outlined p-0.5 bg-[#0077C2] text-white rounded-sm" style="font-size: 20px"> cloud </span>
+                  <span class="mx-1 text-[12px] font-light">cloud</span>
+                </div>
+                <progress class="w-56 progress progress-info" id="cloudInfo" value="" max="100"></progress>
+              </div>
+            </section>
+          </section>
+        </div>
+      </div>
+      <section class="relative hidden w-full h-auto p-3 mx-auto transition-all duration-500 rounded-md select-none" id="instruction">
+        <div class="flex items-center w-full h-full bg-[inherit]">
+          <span class="mx-2 p-3 material-symbols-outlined bg-[inherit] shadow-lg text-white rounded-xl flex justify-center items-center" style="font-size: 25px"> warning </span>
+          <span id="instructionmessage" class="text-sm md:text-sm lg:text-md text-slate-100"></span>
+        </div>
+        <span class="absolute text-red-600 bg-white rounded-full select-none material-symbols-outlined -top-3 -right-3" id="closeInfo"> close </span>
+      </section>
+      <!-- more info btn -->
+      <button class="bottom-0 mx-auto mt-2 btn btn-info font-kanit bg-[#0077C2] text-white" id="thebutton">more info</button>
+    </section>
+    <!-- carousel container -->
+    <section id="weatherForecast" class="mx-auto my-3 shadow-md w-[90%] h-auto md:w-[50%] rounded-xl p-4 capitalize flex justify-center flex-col items-center gap-y-3">
+      <h1 class="relative pb-2 inline-block before:absolute before:w-6/12 before:h-1 before:rounded-full before:mx-auto before:bottom-0 before:left-0 before:right-0 before:bg-[#0077C2] before:content-[''] font-semibold font-kanit capitalize">weather forecast</h1>
+      <!-- the carousel 1 -->
+      <div class="w-full p-4 space-x-4 carousel carousel-center rounded-box">
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="h-64 bg-[#f5f4f1] rounded-box p-3 flex flex-col items-center gap-y-3 justify-around">
+            <div class="dateForecast w-full p-0.5 rounded-full text-slate-200 text-center bg-[#0077C2]"></div>
+            <div class="flex items-center">
+              <div class="text-3xl md:text-4xl font-ubuntu degreeForecast">34°C</div>
+              <img src="" alt="" class="inline-block w-10 h-10 forecastLogo" />
+            </div>
+            <div class="flex flex-col self-start gap-y-2">
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecast"></span></div>
+              <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecast"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- recomended location -->
+    <section id="otherLocation" class="mx-auto my-3 shadow-md w-[90%] h-auto md:w-[50%] rounded-xl p-4 capitalize flex justify-center flex-col items-center gap-y-3">
+      <h1 class="relative pb-2 inline-block before:absolute before:w-6/12 before:h-1 before:rounded-full before:mx-auto before:bottom-0 before:left-0 before:right-0 before:bg-[#0077C2] before:content-[''] font-semibold font-kanit capitalize">recomended location</h1>
+      <!-- carousel 2 -->
+      <div class="w-full p-4 space-x-4 select-none carousel carousel-center rounded-box">
+        <!-- carousel item -->
+        <div class="carousel-item w-[300px] h-[360px] bg-[#f5f4f1] rounded-box overflow-hidden block">
+          <header class="relative w-full h-[200px] before:absolute before:w-full before:h-full before:bottom-0 before:bg-gradient-to-t before:from-[#000000e9] before:to-[#00000025] before:z-[1]">
+            <h1 class="absolute capitalize locationRandom z-[1] text-2xl font-kanit top-3 left-3 text-slate-200">123</h1>
+            <div class="absolute infoDegreeRandom z-[1] bottom-3 right-3 flex items-center">
+              <h1 class="text-3xl capitalize degreeRandom font-kanit text-slate-200"></h1>
+              <img src="" alt="" class="w-12 h-12 randomIonCondition" />
+            </div>
+            <img src="" alt="" class="absolute object-cover w-full h-full randomLocationPhoto" />
+          </header>
+          <div class="flex flex-col self-start p-2 gap-y-3">
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> air </span> <span>air Quality:</span> <span class="airQualityForecastRandom"></span></div>
+          </div>
+        </div>
+        <div class="carousel-item w-[300px] h-[360px] bg-[#f5f4f1] rounded-box overflow-hidden block">
+          <header class="relative w-full h-[200px] before:absolute before:w-full before:h-full before:bottom-0 before:bg-gradient-to-t before:from-[#000000e9] before:to-[#00000025] before:z-[1]">
+            <h1 class="absolute capitalize locationRandom z-[1] text-2xl font-kanit top-3 left-3 text-slate-200">123</h1>
+            <div class="absolute infoDegreeRandom z-[1] bottom-3 right-3 flex items-center">
+              <h1 class="text-3xl capitalize degreeRandom font-kanit text-slate-200"></h1>
+              <img src="" alt="" class="w-12 h-12 randomIonCondition" />
+            </div>
+            <img src="" alt="" class="absolute object-cover w-full h-full randomLocationPhoto" />
+          </header>
+          <div class="flex flex-col self-start p-2 gap-y-3">
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> air </span> <span>air Quality:</span> <span class="airQualityForecastRandom"></span></div>
+          </div>
+        </div>
+        <div class="carousel-item w-[300px] h-[360px] bg-[#f5f4f1] rounded-box overflow-hidden block">
+          <header class="relative w-full h-[200px] before:absolute before:w-full before:h-full before:bottom-0 before:bg-gradient-to-t before:from-[#000000e9] before:to-[#00000025] before:z-[1]">
+            <h1 class="absolute capitalize locationRandom z-[1] text-2xl font-kanit top-3 left-3 text-slate-200">123</h1>
+            <div class="absolute infoDegreeRandom z-[1] bottom-3 right-3 flex items-center">
+              <h1 class="text-3xl capitalize degreeRandom font-kanit text-slate-200"></h1>
+              <img src="" alt="" class="w-12 h-12 randomIonCondition" />
+            </div>
+            <img src="" alt="" class="absolute object-cover w-full h-full randomLocationPhoto" />
+          </header>
+          <div class="flex flex-col self-start p-2 gap-y-3">
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> air </span> <span>air Quality:</span> <span class="airQualityForecastRandom"></span></div>
+          </div>
+        </div>
+        <div class="carousel-item w-[300px] h-[360px] bg-[#f5f4f1] rounded-box overflow-hidden block">
+          <header class="relative w-full h-[200px] before:absolute before:w-full before:h-full before:bottom-0 before:bg-gradient-to-t before:from-[#000000e9] before:to-[#00000025] before:z-[1]">
+            <h1 class="absolute capitalize locationRandom z-[1] text-2xl font-kanit top-3 left-3 text-slate-200">123</h1>
+            <div class="absolute infoDegreeRandom z-[1] bottom-3 right-3 flex items-center">
+              <h1 class="text-3xl capitalize degreeRandom font-kanit text-slate-200"></h1>
+              <img src="" alt="" class="w-12 h-12 randomIonCondition" />
+            </div>
+            <img src="" alt="" class="absolute object-cover w-full h-full randomLocationPhoto" />
+          </header>
+          <div class="flex flex-col self-start p-2 gap-y-3">
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> air </span> <span>air Quality:</span> <span class="airQualityForecastRandom"></span></div>
+          </div>
+        </div>
+        <div class="carousel-item w-[300px] h-[360px] bg-[#f5f4f1] rounded-box overflow-hidden block">
+          <header class="relative w-full h-[200px] before:absolute before:w-full before:h-full before:bottom-0 before:bg-gradient-to-t before:from-[#000000e9] before:to-[#00000025] before:z-[1]">
+            <h1 class="absolute capitalize locationRandom z-[1] text-2xl font-kanit top-3 left-3 text-slate-200">123</h1>
+            <div class="absolute infoDegreeRandom z-[1] bottom-3 right-3 flex items-center">
+              <h1 class="text-3xl capitalize degreeRandom font-kanit text-slate-200"></h1>
+              <img src="" alt="" class="w-12 h-12 randomIonCondition" />
+            </div>
+            <img src="" alt="" class="absolute object-cover w-full h-full randomLocationPhoto" />
+          </header>
+          <div class="flex flex-col self-start p-2 gap-y-3">
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> rainy </span> <span>rain:</span> <span class="rainForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> airwave </span> <span>maxwind km/h:</span> <span class="maxWIndForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> humidity_mid </span> <span>avghumidity:</span> <span class="humidityForecastRandom"></span></div>
+            <div class="flex items-center gap-x-2 font-ubuntu"><span class="material-symbols-outlined"> air </span> <span>air Quality:</span> <span class="airQualityForecastRandom"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- footer -->
+    <footer class="items-center p-4 footer bg-neutral text-neutral-content mx-auto my-3 shadow-md w-[90%] h-auto md:w-[50%] rounded-xl">
+      <div class="items-center grid-flow-col">
+        <svg width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" class="fill-current">
+          <path
+            d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"
+          ></path>
+        </svg>
+        <p class="text-base capitalize md:text-lg font-kanit">by dillah © 2023 - thanks for trying my project</p>
+      </div>
+    </footer>
+    <script src="./script.js"></script>
+    <!-- icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </body>
+</html>
